@@ -77,45 +77,48 @@
 			alert(err);
 		}
 
-		var listing = Etsy.getListing(function(){}, errback);
+		var doListing = function() {
+			var listing = Etsy.getListing(function(){}, errback);
 
-		var imgLoadedDeferred = $.Deferred();
+			var imgLoadedDeferred = $.Deferred();
 
-		listing.done(function(data) {
-			var products = data.results;
+			listing.done(function(data) {
+				var products = data.results;
 
-			var imgDeferreds = [];
+				var imgDeferreds = [];
 
-			// Delay every second: ETSY: up to 10 requests per second
-			var batches = Math.floor(products.length/8) + products.length%8;
+				// Delay every second: ETSY: up to 10 requests per second
+				var batches = Math.floor(products.length/8) + products.length%8;
 
-			var delayPerBatch = 1200; // A little over 1000 ms
+				var delayPerBatch = 1200; // A little over 1000 ms
 
-			for (var i = 0; i < batches; i++) {
-				(function(iter) {
-					setTimeout(function() {
-						var batch = products.slice(iter*8, (iter+1)*8);
-						for (var j = 0; j < batch.length; j++) {
-							var d = Etsy.getProductImages(batch[j], errback);
-							imgDeferreds.push(d);
-						}
-					}, delayPerBatch * iter);
-				})(i);
-			}
+				for (var i = 0; i < batches; i++) {
+					(function(iter) {
+						setTimeout(function() {
+							var batch = products.slice(iter*8, (iter+1)*8);
+							for (var j = 0; j < batch.length; j++) {
+								var d = Etsy.getProductImages(batch[j], errback);
+								imgDeferreds.push(d);
+							}
+						}, delayPerBatch * iter);
+					})(i);
+				}
 
-			setTimeout(function() {
-				console.log("To process " + imgDeferreds.length);
+				setTimeout(function() {
+					console.log("To process " + imgDeferreds.length);
 
-				var collectiveDeferred = $.when.apply($, imgDeferreds);
-				collectiveDeferred.then( function() {
-					imgLoadedDeferred.resolve(products);
-				}, imgLoadedDeferred.reject );
-			}, delayPerBatch * batches);
+					var collectiveDeferred = $.when.apply($, imgDeferreds);
+					collectiveDeferred.then( function() {
+						imgLoadedDeferred.resolve(products);
+					}, imgLoadedDeferred.reject );
+				}, delayPerBatch * batches);
 
-		});
+			});
+			return imgLoadedDeferred;
+		};
 
 		var find = function() {
-			return imgLoadedDeferred;
+			return doListing();
 		};
 
 		return {
