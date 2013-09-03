@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Etsy Search Products</title>
+</head>
+<body>
+	<script src="js/jquery.js"></script>
+	<script>
+
+		var listing_url = "https://openapi.etsy.com/v2/listings/active.js?api_key=skg82rpwr3x8t285zcj6z03w";
+
+		var getData = function(data) {
+			if (data.ok) {
+				alert( JSON.stringify(data) );
+			}
+			else {
+				// error
+				alert("Error in getData()");
+			}			
+		};
+
+		var deferred = $.ajax({
+			url: listing_url
+		  , dataType: 'jsonp'
+		  , success: getData // cannot be part of the deferred
+		  // , cache: false
+		});
+
+		deferred.always = function() {
+			alert("always");
+		}
+
+
+	</script>
+</body>
+</html>
