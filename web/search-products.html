@@ -9,7 +9,6 @@
 	<script src="js/etsy.js"></script>
 	<script>
 
-
 		var getData = function(data) {
 			console.log( JSON.stringify(data) );			
 		};
@@ -18,10 +17,25 @@
 			alert(err);
 		}
 
-		var deferred = $.Deferred();
-		deferred.then( getData, errback );
+		var listing = Etsy.getListing(getData, errback);
 
-		Etsy.getListing(deferred);
+		var products; // Would like to see results
+
+		var imgLoadedDeferred = $.Deferred();
+		imgLoadedDeferred.then( function() { console.log(products); }, errback );
+
+		listing.done(function(data) {
+			products = data.results;
+
+			var imgDeferreds = [];
+
+			for (var i = 0; i < products.length; i++) {
+				var d = Etsy.getProductImages(products[i], errback); // Multiple images!: could be a carousel
+				imgDeferreds.push(d);
+			}
+			var collectiveDeferred = $.when.apply($, imgDeferreds);
+			collectiveDeferred.then( imgLoadedDeferred.resolve, imgLoadedDeferred.reject );
+		});
 
 	</script>
 </body>

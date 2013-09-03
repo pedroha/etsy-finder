@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Etsy Search Products</title>
+</head>
+<body>
+	<script src="js/jquery.js"></script>
+	<script src="js/etsy.js"></script>
+	<script>
+
+		var errback = function(err) {
+			alert(err);
+		};
+
+		var product = {
+	        "listing_id": 98198249,
+	        "state": "active",
+	        "user_id": 5766736,
+	        "category_id": 69171303,
+	        "title": "PATTERN Instant Download Jasmine Princess Crochet Doll Amigurumi",
+	        "description": "A whole new world... and a whole new way to see the beautiful Jasmine as an Amigurumi Crochet Doll! She is just too beautiful to look at - you won&#39;t be able to stop :) I&#39;m sure you&#39;ll enjoy her company just like I do.\r\n------------------------------------------------------------------------------------------------------\r\nTHIS LISTING IS FOR THE PATTERN (HOW TO MAKE THE DOLL).\r\nTHIS IS NOT THE ACTUAL DOLL.\r\nYou can find the actual doll here: http:\/\/www.etsy.com\/listing\/97998580\/jasmine-disney-princess-crochet-doll\r\n------------------------------------------------------------------------------------------------------\r\n\r\nThe pattern comes with detailed written instructions, 31 IMAGES and completed with CHARTS!! \r\n(if you prefer to use them).\r\n\r\nThe skill level required for this pattern is Intermediate.\r\n\r\nShe measures about 6 inches tall and about 3 inches wide. The doll is made out of 100% acrylic yarn and is filled with fiberfill.\r\n\r\nYou can untie her ribbons and enjoy her long long long long - did I mention long? - flowing hair. Her Necklace and headband are detachable. \r\n\r\nThe dolls in the background are not included BUT you can get them and others here (real dolls - see inside each for more patterns):\r\nhttp:\/\/www.etsy.com\/listing\/91388593\/ariel-little-mermaid-disney-princess\r\nhttp:\/\/www.etsy.com\/listing\/91645435\/rapunzel-tangled-disney-princess-crochet\r\nhttp:\/\/www.etsy.com\/listing\/94549466\/aurora-sleeping-beauty-disney-princess\r\nhttp:\/\/www.etsy.com\/listing\/96012663\/pocahontas-disney-princess-crochet-doll\r\nhttp:\/\/www.etsy.com\/listing\/96420163\/snow-white-disney-princess-amigurumi?ref=v1_other_2\r\nhttp:\/\/www.etsy.com\/listing\/94348426\/tinkerbell-from-peter-pan-disney-doll\r\nhttp:\/\/www.etsy.com\/listing\/94902971\/ariels-prince-eric-the-little-mermaid\r\n\r\nIf you&#39;re wondering how I think Jasmine looks like in 2D check her out here:\r\nhttp:\/\/www.etsy.com\/listing\/92341260\/set-of-10-fairy-tale-appliques\r\n\r\nThe pattern is my own inspired by the lovely Jasmine.\r\n\r\nIf you&#39;re looking to buy more than 1 and save money check out my 3 pattern purchase option:\r\nhttp:\/\/www.etsy.com\/listing\/94430828\/3-pattern-set-choose-any-3-patterns\r\n\r\n*********************************************************************************\r\nCHECK OUT MY STORE ANNOUNCEMENTS FOR SALES AND SPECIAL OFFERS BEFORE YOU PURCHASE:\r\nhttp:\/\/www.etsy.com\/shop\/Sahrit\r\n*********************************************************************************\r\n\r\n===========================================\r\nFeel free to contact me for any questions!\r\n===========================================\r\n\r\nThe pattern is available via instant download. Once your payment is complete you will receive an email to the address registered with your Etsy account with the information on how to download the file. Please send me a message if you have any problems what so ever!\r\n\r\nYou will need Adobe Reader to open the pattern. You can download the latest version for free at http:\/\/www.adobe.com\r\n\r\nNote - I&#39;m not affiliated with Disney. (sigh)\r\n\r\n*You may NOT use this pattern, or the dolls produced following the pattern for commercial\/retail purposes.",
+	        "creation_tsz": 1378025540,
+	        "ending_tsz": 1388569940,
+	        "original_creation_tsz": 1335154146,
+	        "last_modified_tsz": 1378025540,
+	        "price": "4.95",
+	        "currency_code": "USD",
+	        "quantity": 56,
+	        "tags": ["patterns", "crochet pattern", "knit patterns", "knitting patterns", "disney princess", "amigurumi", "doll", "fairy tale", "Aladdin", "Jasmine", "ornament", "Desert", "Arab"],
+	        "category_path": ["Patterns", "Crochet", "Amigurumi"],
+	        "category_path_ids": [68887486, 69152619, 69171303],
+	        "materials": [],
+	        "shop_section_id": 11170226,
+	        "featured_rank": 0,
+	        "state_tsz": 1375550420,
+	        "url": "http:\/\/www.etsy.com\/listing\/98198249\/pattern-instant-download-jasmine?utm_source=etsyfinder&utm_medium=api&utm_campaign=api",
+	        "views": 4436,
+	        "num_favorers": 215,
+	        "processing_min": null,
+	        "processing_max": null,
+	        "who_made": "i_did",
+	        "is_supply": "false",
+	        "when_made": "made_to_order",
+	        "is_private": false,
+	        "recipient": null,
+	        "occasion": null,
+	        "style": null,
+	        "non_taxable": false,
+	        "is_customizable": true,
+	        "is_digital": true,
+	        "file_data": "1 PDF",
+	        "has_variations": false
+	    };
+
+		var d = Etsy.getProductImages(product, errback);
+		// d.done(function(product, images) {
+		// 	var msg = "Product: " + JSON.stringify(product) + "/ Images: " + JSON.stringify(images);
+		// 	alert(msg);
+		// });
+		d.done(function() {
+			console.log(product.images);
+		})
+
+	</script>
+</body>
+</html>
