@@ -9,61 +9,22 @@
 	<script src="js/etsy.js"></script>
 	<script>
 
-		var EtsySearch = (function() {
-			"use strict";
-
-			var errback = function(err) {
-				alert(err);
-			}
-
-			var listing = Etsy.getListing(function(){}, errback);
-
-			var imgLoadedDeferred = $.Deferred();
-
-			listing.done(function(data) {
-				var products = data.results;
-
-				var imgDeferreds = [];
-
-				// Delay every second: ETSY: up to 10 requests per second
-				var batches = products.length/8 + products.length%8;
-
-				var delayPerBatch = 1100; // A little over 1000 ms
-
-				for (var i = 0; i < batches; i++) {
-					(function(iter) {
-						setTimeout(function() {
-							var batch = products.slice(iter*8, 8);
-							for (var j = 0; j < batch.length; j++) {
-								var d = Etsy.getProductImages(batch[j], errback);
-								imgDeferreds.push(d);
-							}
-						}, delayPerBatch);
-					})(i);
-				}
-
-				setTimeout(function() {
-					var collectiveDeferred = $.when.apply($, imgDeferreds);
-					collectiveDeferred.then( function() {
-						imgLoadedDeferred.resolve(products);
-					}, imgLoadedDeferred.reject );				
-				}, delayPerBatch * batches);
-
-			});
-
-			var find = function() {
-				return imgLoadedDeferred;
-			};
-
-			return {
-				find: find
-			}
-		})();
-
 		var deferred = EtsySearch.find();
+		
 		deferred.done(function(products) {
 			alert("FIN. See console.");
 			console.log( products );
+
+			for (var i = 0; i < products.length; i++) {
+				var p = products[i];
+
+				if (!!p.images) {
+					console.log(p.listing_id + " has images: " + p.images.length);
+				}
+				else {
+					console.log(p.listing_id + " has no images");
+				}
+			}
 		});
 
 	</script>
