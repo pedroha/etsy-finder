@@ -29,12 +29,28 @@
 
 			var imgDeferreds = [];
 
-			for (var i = 0; i < products.length; i++) {
-				var d = Etsy.getProductImages(products[i], errback); // Multiple images!: could be a carousel
-				imgDeferreds.push(d);
+			// Delay every second: ETSY: up to 10 requests per second
+			var batches = products.length/8 + products.length%8;
+
+			var delayPerBatch = 1100; // A little over 1000 ms
+
+			for (var i = 0; i < batches; i++) {
+				(function(iter) {
+					setTimeout(function() {
+						var batch = products.slice(iter*8, 8);
+						for (var j = 0; j < batch.length; j++) {
+							var d = Etsy.getProductImages(batch[j], errback);
+							imgDeferreds.push(d);
+						}
+					}, delayPerBatch);
+				})(i);
 			}
-			var collectiveDeferred = $.when.apply($, imgDeferreds);
-			collectiveDeferred.then( imgLoadedDeferred.resolve, imgLoadedDeferred.reject );
+
+			setTimeout(function() {
+				var collectiveDeferred = $.when.apply($, imgDeferreds);
+				collectiveDeferred.then( imgLoadedDeferred.resolve, imgLoadedDeferred.reject );				
+			}, delayPerBatch * batches);
+
 		});
 
 	</script>
