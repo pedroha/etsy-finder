@@ -1,16 +1,18 @@
 (function(exports) {
 	"use strict";
 
-	var Etsy = {
-		// TODO: can refactor urls: base + app_id
-		listing_url: 		"https://openapi.etsy.com/v2/listings/active.js?api_key=skg82rpwr3x8t285zcj6z03w"
-	  , product_url: 		"https://openapi.etsy.com/v2/listings/%id%.js?api_key=skg82rpwr3x8t285zcj6z03w"
-	  , product_image_url:  "https://openapi.etsy.com/v2/listings/%id%/images.js?api_key=skg82rpwr3x8t285zcj6z03w"
+	var BASE_URL = "https://openapi.etsy.com/v2/listings";
+  	var API_KEY  = "skg82rpwr3x8t285zcj6z03w";
 
-	  , getListing: function(callback, errback) {
+	var Etsy = {
+	    listing_url: 		BASE_URL + "/active.js?api_key="	  + API_KEY
+	  , product_url: 		BASE_URL + "/%id%.js?api_key=" 		  + API_KEY
+	  , product_image_url:  BASE_URL + "/%id%/images.js?api_key=" + API_KEY
+
+	  , getListing: function(errback) {
 
 	  		var deferred = $.Deferred();
-			deferred.then( callback, errback );
+	  		deferred.fail(errback);
 
 			var getData = function(data) {
 				if (data.ok) {
@@ -30,9 +32,8 @@
 			  , error: deferred.reject
 			});
 
-			return deferred;
+			return deferred.promise();
 		}
-	  , nop: function() {}
 	  , getProductImages: function(product, errback) {
 	  		var id = product.listing_id;
 	  		var url = this.product_image_url.replace("%id%", id);
@@ -67,8 +68,8 @@
 			  , error: deferred.reject
 			});
 
-			return deferred;
-	  }	
+			return deferred.promise();
+		}
 	};
 
 	var EtsySearch = (function() {
@@ -78,7 +79,9 @@
 		}
 
 		var doListing = function() {
-			var listing = Etsy.getListing(function(){}, errback);
+			var listing = Etsy.getListing(errback);
+
+			listing.fail(errback);
 
 			var imgLoadedDeferred = $.Deferred();
 
@@ -114,7 +117,7 @@
 				}, delayPerBatch * batches);
 
 			});
-			return imgLoadedDeferred;
+			return imgLoadedDeferred.promise();
 		};
 
 		var find = function() {
