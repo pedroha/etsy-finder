@@ -111,8 +111,7 @@
 				}
 
 				setTimeout(function() {
-					console.log("To process " + imgDeferreds.length);
-
+					// console.log("To process " + imgDeferreds.length);
 					var collectiveDeferred = $.when.apply($, imgDeferreds);
 					collectiveDeferred.then( function() {
 						imgLoadedDeferred.resolve(products);

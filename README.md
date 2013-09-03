@@ -38,3 +38,10 @@ https://openapi.etsy.com/v2/listings/98198249?api_key=skg82rpwr3x8t285zcj6z03w
 Images
 https://openapi.etsy.com/v2/listings/98198249/images?api_key=skg82rpwr3x8t285zcj6z03w
 
+
+Resources
+=========
+
+	jquery
+	jQuery BlockUI: http://www.malsup.com/jquery/block/
+	Ajax Loaders: http://www.loadinfo.net, http://preloaders.net/
