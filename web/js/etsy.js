@@ -9,7 +9,7 @@
 	  , product_url: 		BASE_URL + "/%id%.js?api_key=" 		  + API_KEY
 	  , product_image_url:  BASE_URL + "/%id%/images.js?api_key=" + API_KEY
 
-	  , getListing: function(errback) {
+	  , getListing: function(options, errback) {
 
 	  		var deferred = $.Deferred();
 	  		deferred.fail(errback);
@@ -25,9 +25,12 @@
 				}			
 			};
 
+			var url = this.listing_url;
+
 			$.ajax({
-				url: this.listing_url
+				url: url
 			  , dataType: 'jsonp'
+			  , data: options
 			  , success: getData // cannot be part of the deferred
 			  , error: deferred.reject
 			});
@@ -78,8 +81,8 @@
 			alert(err);
 		}
 
-		var doListing = function() {
-			var listing = Etsy.getListing(errback);
+		var doListing = function(keywords) {
+			var listing = Etsy.getListing(keywords, errback);
 
 			listing.fail(errback);
 
@@ -120,8 +123,8 @@
 			return imgLoadedDeferred.promise();
 		};
 
-		var find = function() {
-			return doListing();
+		var find = function(options) {
+			return doListing(options);
 		};
 
 		return {

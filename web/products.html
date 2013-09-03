@@ -3,35 +3,37 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Etsy Search Products</title>
+	<style>
+
+		.search-box > * {
+			font: 3em Georgia;
+			border-radius: 5px;
+			border: 2px solid #555;
+		}
+
+
+	</style>
 </head>
 <body>
 	<script src="js/jquery.js"></script>
 	<script src="js/etsy.js"></script>
 
+	<div class="search-box">
+		<input type="text" id="keywords" value="" placeholder="Keyword"/>
+		<button id="search-btn">Search</button>		
+	</div>
+
 	<div id="products"></div>
 
 	<script>
 
-		var deferred = EtsySearch.find();
+		var options = {
+			keywords: "marionette"
+		};
+
+		var deferred = EtsySearch.find(options);
 
 		deferred.done(function(products) {
-			// alert("FIN. See console.");
-
-			/*
-			console.log( products );
-
-			// Check we got all the images
-			for (var i = 0; i < products.length; i++) {
-				var p = products[i];
-
-				if (!!p.images) {
-					console.log(p.listing_id + " has images: " + p.images.length);
-				}
-				else {
-					console.log(p.listing_id + " has no images");
-				}
-			}
-			*/
 			var list = [];
 
 			for (var i = 0; i < products.length; i++) {
@@ -77,6 +79,7 @@
 			$list.append( pieces.join('') );
 			$('#products').append($list);
 		}
+
 
 	</script>
 </body>
