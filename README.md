@@ -2,11 +2,19 @@ etsy-finder
 ===========
 
 Find Etsy products using Etsy APIs
+----------------------------------
 
-http://www.etsy.com
+	1. Search for a subset of Etsy's products. 
+	2. View more details for a product
+	3. Make the list sortable and able to remove items.
+
+
+Developer Registration
+http://www.etsy.com/developers/documentation/getting_started/register
 
 APP NAME Etsy Finder
 KEYSTRING skg82rpwr3x8t285zcj6z03w
+
 
 API Documentation
 =================
