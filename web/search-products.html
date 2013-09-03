@@ -9,6 +9,7 @@
 	<script src="js/etsy.js"></script>
 	<script>
 
+
 		var getData = function(data) {
 			console.log( JSON.stringify(data) );			
 		};
@@ -17,7 +18,10 @@
 			alert(err);
 		}
 
-		Etsy.getListing(getData, errback);
+		var deferred = $.Deferred();
+		deferred.then( getData, errback );
+
+		Etsy.getListing(deferred);
 
 	</script>
 </body>
