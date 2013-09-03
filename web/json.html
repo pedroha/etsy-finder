@@ -1,0 +1,13 @@
+<script type="text/javascript">
+function getData(data) {
+      if (data.ok) {
+            // do something with the data here
+		alert( JSON.stringify(data) );
+        } else {
+            alert(data.error);
+      }
+}
+</script>
+
+<script src="https://openapi.etsy.com/v2/users/testusername.js?callback=getData&api_key=skg82rpwr3x8t285zcj6z03w"></script>
+
