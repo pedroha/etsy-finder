@@ -2,13 +2,21 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Etsy Search Products</title>
+	<title>Etsy Finder</title>
 	<style>
+
+		body {
+			font: 1em Georgia;
+		}
 
 		.search-box > * {
 			font: 3em Georgia;
 			border-radius: 5px;
 			border: 2px solid #555;
+		}
+
+		h1 {
+			font-size: 3em;
 		}
 
 		li {
@@ -23,6 +31,7 @@
 	<script src="js/jquery.blockUI.js"></script>
 	<script src="js/etsy.js"></script>
 
+	<h1>Etsy Finder</h1>
 	<div class="search-box">
 		<input type="text" id="keywords" value="" placeholder="Keyword"/>
 		<button id="search-btn">Search</button>		
