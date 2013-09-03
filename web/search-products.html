@@ -7,12 +7,14 @@
 <body>
 	<script src="js/jquery.js"></script>
 	<script src="js/etsy.js"></script>
+
+
 	<script>
 
 		var deferred = EtsySearch.find();
-		
+
 		deferred.done(function(products) {
-			alert("FIN. See console.");
+			// alert("FIN. See console.");
 			console.log( products );
 
 			for (var i = 0; i < products.length; i++) {

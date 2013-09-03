@@ -17,7 +17,8 @@
 					deferred.resolve(data);
 				}
 				else {
-					var msg = "getListing(): Invalid response from server " + this.listing_url;
+					var msg = "getListing(): Invalid response from server " +
+								this.listing_url + "/" + + JSON.stringify(data);
 					deferred.reject(msg);
 				}			
 			};
@@ -43,6 +44,8 @@
 			}, errback );
 
 			var getImageData = function(data) {
+				console.log(data);
+				
 				if (data.ok) {
 					if (data.count && data.count > 0) {
 						deferred.resolve(product, data.results);
@@ -86,14 +89,14 @@
 			var imgDeferreds = [];
 
 			// Delay every second: ETSY: up to 10 requests per second
-			var batches = products.length/8 + products.length%8;
+			var batches = Math.floor(products.length/8) + products.length%8;
 
-			var delayPerBatch = 5000; // A little over 1000 ms
+			var delayPerBatch = 1200; // A little over 1000 ms
 
 			for (var i = 0; i < batches; i++) {
 				(function(iter) {
 					setTimeout(function() {
-						var batch = products.slice(iter*8, 8);
+						var batch = products.slice(iter*8, (iter+1)*8);
 						for (var j = 0; j < batch.length; j++) {
 							var d = Etsy.getProductImages(batch[j], errback);
 							imgDeferreds.push(d);
@@ -101,12 +104,13 @@
 					}, delayPerBatch * iter);
 				})(i);
 			}
-
 			setTimeout(function() {
+				console.log("To process " + imgDeferreds.length);
+
 				var collectiveDeferred = $.when.apply($, imgDeferreds);
 				collectiveDeferred.then( function() {
 					imgLoadedDeferred.resolve(products);
-				}, imgLoadedDeferred.reject );				
+				}, imgLoadedDeferred.reject );
 			}, delayPerBatch * batches);
 
 		});
