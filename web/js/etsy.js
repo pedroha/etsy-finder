@@ -44,8 +44,6 @@
 			}, errback );
 
 			var getImageData = function(data) {
-				console.log(data);
-				
 				if (data.ok) {
 					if (data.count && data.count > 0) {
 						deferred.resolve(product, data.results);
@@ -104,6 +102,7 @@
 					}, delayPerBatch * iter);
 				})(i);
 			}
+
 			setTimeout(function() {
 				console.log("To process " + imgDeferreds.length);
 
