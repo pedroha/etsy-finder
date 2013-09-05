@@ -13,7 +13,9 @@
 
     <script id="product-template" type="text/template">
          <img src="<%= image_medium %>"/>
-         <p><%= title %></p>
+         <p>Id:<%= id %></p>
+         <p>Price:<%= price %></p>
+         <p>Title:<%= title %></p>
          <button class="delete">Remove</button>
     </script>
 
@@ -34,7 +36,7 @@
               , title: p.title
               , category: p.category_path.join("/")
               , description: p.description
-              , price: p.price
+              , price: parseFloat(p.price)
               , currency_code: p.currency_code
             };
 
@@ -108,27 +110,77 @@
 
         // Test collection of multiple products
 
-        var ProductListing = Backbone.Collection.extend({
+
+        // http://stackoverflow.com/questions/5013819/reverse-sort-order-with-backbone-js
+
+        var SortedCollection = Backbone.Collection.extend({
+
+           initialize: function () {
+               // Default sort field and direction
+               this.sortField = "title";
+               this.sortDirection = "ASC";
+               this.caseSensitive = false;
+           },
+
+           setSortField: function (field, direction) {
+               this.sortField = field;
+               this.sortDirection = direction;
+           },
+
+           comparator: function (m) {
+               return m.get(this.sortField);
+           },
+
+           // Overriding sortBy (copied from underscore and just swapping left and right for reverse sort)
+           sortBy: function (iterator, context) {
+               var obj = this.models,
+                   direction = this.sortDirection;
+
+               var self = this;
+
+               return _.pluck(_.map(obj, function (value, index, list) {
+                   return {
+                       value: value,
+                       index: index,
+                       criteria: iterator.call(context, value, index, list)
+                   };
+               }).sort(function (left, right) {
+                   // swap a and b for reverse sort
+                   var a = direction === "ASC" ? left.criteria : right.criteria,
+                       b = direction === "ASC" ? right.criteria : left.criteria;
+
+                   if (a !== b) {
+                       if (typeof a === "string" && !self.caseSensitive) a = a.toLowerCase();
+                       if (typeof b === "string" && !self.caseSensitive) b = b.toLowerCase();
+                       if (a > b || a === void 0) return 1;
+                       if (a < b || b === void 0) return -1;
+                   }
+                   return left.index < right.index ? -1 : 1;
+               }), 'value');
+           }
+        });
+
+        var ProductListing = SortedCollection.extend({
             model: Product
         });
 
         var ProductListingView = Backbone.View.extend({
             el: $('#product-list')
+          , $list: $('ul', this.el)
           , events: {
             }
           , initialize: function() {
                 this.collection = new ProductListing();
-
                 this.listenTo(this.collection, 'add', this.appendItem);
-                //this.collection.bind('add', this.appendItem);
-
                 this.render();
             }
           , render: function() {
                 var self = this;
-                $(this.el).empty();
+                this.$list.empty();
+                var cnt = 0;
                 _(this.collection.models).each(function(item) {
                     self.appendItem(item);
+                    console.log(cnt++, item.attributes);
                 }, this);
                 return this;
             }
@@ -136,13 +188,31 @@
                 var v = new ProductView({
                     model: item
                 });
-                $('ul', this.el).append(v.render().el);            
+                this.$list.append(v.render().el);            
             }
         });
 
         var listing = new ProductListingView({el: $('product-list')});
 
         listing.collection.add(products);
+
+        /*
+
+        setTimeout(function() {
+            alert("About to reorder");
+
+            listing.collection.setSortField("price", "DESC");
+            listing.collection.sort();
+            listing.render();
+        }, 5000);
+        */
+
+        /*
+        listing.collection.setSortField("title", "ASC");
+        listing.collection.sort();
+        listing.render();
+
+        */
 
         /*
         // ProductListing.fetch({keywords: "blue marionette"});
