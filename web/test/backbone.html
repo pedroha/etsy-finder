@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Backbone for Etsy</title>
+</head>
+<body>
+
+    <script src="../js/jquery.js"></script>
+    <script src="../js/underscore.js"></script>
+    <script src="../js/backbone.js"></script>
+    <script src="etsy-products.js"></script>
+
+    <script id="product-template" type="text/template">
+         <img src="<%= image_medium %>"/>
+         <p><%= title %></p>
+         <button class="delete">Remove</button>
+    </script>
+
+    <div id="product-single"></div>
+
+    <div id="product-list">
+        <ul>
+        </ul>
+    </div>
+
+    <script>
+
+        var productTransformer = function(product) {
+            var p = product;
+
+            var item = {
+                id: p.listing_id
+              , title: p.title
+              , category: p.category_path.join("/")
+              , description: p.description
+              , price: p.price
+              , currency_code: p.currency_code
+            };
+
+            if (p.images && p.images.length > 0) {
+                var img = p.images[0];
+                item['image_medium']   = img['url_170x135'];
+                item['image_large'] = img['url_fullxfull'];
+            }
+            return item;
+        }
+
+        var products = _.map(etsy_products, productTransformer);
+
+        var cnt = 0;
+
+        _.each(products, function(p) {
+            cnt = (cnt+1) % etsy_product_images.length;
+            var img = etsy_product_images[cnt];
+            p['image_medium']   = img['url_170x135'];
+            p['image_large'] = img['url_fullxfull'];
+        });
+
+        console.log(products);
+
+        var Product = Backbone.Model.extend({
+            defaults: {
+                id: 0
+              , title: ''
+              , category: ''
+              , description: ''
+              , price: ''
+              , currency_code: ''
+            }
+        });
+
+        Backbone.sync = function(method, model, options) {
+            // do nothing!
+        };
+
+        var ProductView = Backbone.View.extend({
+            tagName: 'li'
+          , productTpl: _.template( $('#product-template').html() )
+          , events: {
+                'click button.delete': 'remove'
+            }
+          , initialize: function() {
+                _.bindAll(this, 'remove', 'unrender');
+
+                this.listenTo(this.model, 'change', this.render);
+                this.listenTo(this.model, 'remove', this.unrender);
+          }
+          , render: function() {
+            var json = this.model.toJSON();
+            var content = this.productTpl( json );
+            this.$el.html( content );
+            return this;
+          }
+          , unrender: function() {
+            $(this.el).remove();
+          }
+          , remove: function() {
+            this.model.destroy();
+          }
+        });
+
+        // Test single product view
+
+        var product = new Product(products[0]);
+        var view = new ProductView({model: product});
+        $('#product-single').append(view.render().el);
+
+        // Test collection of multiple products
+
+        var ProductListing = Backbone.Collection.extend({
+            model: Product
+        });
+
+        var ProductListingView = Backbone.View.extend({
+            el: $('#product-list')
+          , events: {
+            }
+          , initialize: function() {
+                this.collection = new ProductListing();
+
+                this.listenTo(this.collection, 'add', this.appendItem);
+                //this.collection.bind('add', this.appendItem);
+
+                this.render();
+            }
+          , render: function() {
+                var self = this;
+                $(this.el).empty();
+                _(this.collection.models).each(function(item) {
+                    self.appendItem(item);
+                }, this);
+                return this;
+            }
+          , appendItem: function(item) {
+                var v = new ProductView({
+                    model: item
+                });
+                $('ul', this.el).append(v.render().el);            
+            }
+        });
+
+        var listing = new ProductListingView({el: $('product-list')});
+
+        listing.collection.add(products);
+
+        /*
+        // ProductListing.fetch({keywords: "blue marionette"});
+        */
+
+    </script>
+
+
+</body>
+</html>
