@@ -9,6 +9,7 @@
     <script src="../js/jquery.js"></script>
     <script src="../js/underscore.js"></script>
     <script src="../js/backbone.js"></script>
+    <script src="../js/etsy.js"></script>
     <script src="etsy-products.js"></script>
 
     <script id="product-template" type="text/template">
@@ -19,7 +20,6 @@
          <button class="delete">Remove</button>
     </script>
 
-    <div id="product-single"></div>
 
     <div id="product-list">
         <ul>
@@ -102,12 +102,6 @@
           }
         });
 
-        // Test single product view
-
-        var product = new Product(products[0]);
-        var view = new ProductView({model: product});
-        $('#product-single').append(view.render().el);
-
         // Test collection of multiple products
 
 
@@ -119,7 +113,7 @@
                // Default sort field and direction
                this.sortField = "title";
                this.sortDirection = "ASC";
-               this.caseSensitive = false;
+               this.caseSensitive = true;
            },
 
            setSortField: function (field, direction) {
@@ -150,8 +144,12 @@
                        b = direction === "ASC" ? right.criteria : left.criteria;
 
                    if (a !== b) {
-                       if (typeof a === "string" && !self.caseSensitive) a = a.toLowerCase();
-                       if (typeof b === "string" && !self.caseSensitive) b = b.toLowerCase();
+                       if (!self.caseSensitive) {
+                           if (typeof a === "string" && typeof b === "string") {
+                               a = a.toLowerCase();
+                               b = b.toLowerCase();                    
+                           }
+                       }
                        if (a > b || a === void 0) return 1;
                        if (a < b || b === void 0) return -1;
                    }
@@ -162,6 +160,17 @@
 
         var ProductListing = SortedCollection.extend({
             model: Product
+          , fetch: function(options) { // override default fetch to use our Ajax version
+                var self = this;
+
+                var deferred = EtsySearch.find(options);
+                deferred.done(function(etsyProducts) {
+                    var products = _.map(etsyProducts, productTransformer);
+
+                    self.reset(products);
+                });
+                return deferred;
+            }
         });
 
         var ProductListingView = Backbone.View.extend({
@@ -172,11 +181,16 @@
           , initialize: function() {
                 this.collection = new ProductListing();
                 this.listenTo(this.collection, 'add', this.appendItem);
+                this.listenTo(this.collection, 'reset', this.render);
                 this.render();
             }
           , render: function() {
                 var self = this;
+
+                this.collection.sort();
+                
                 this.$list.empty();
+
                 var cnt = 0;
                 _(this.collection.models).each(function(item) {
                     self.appendItem(item);
@@ -194,24 +208,21 @@
 
         var listing = new ProductListingView({el: $('product-list')});
 
-        listing.collection.add(products);
-
-        /*
-
-        setTimeout(function() {
-            alert("About to reorder");
-
-            listing.collection.setSortField("price", "DESC");
-            listing.collection.sort();
-            listing.render();
-        }, 5000);
-        */
-
-        /*
         listing.collection.setSortField("title", "ASC");
-        listing.collection.sort();
+        listing.collection.add(products);
         listing.render();
 
+        var d = listing.collection.fetch({keywords: "orange monkey"});
+        d.done(function() {
+            alert("Done loading!");
+        });
+
+        /*        
+            listing.collection.setSortField("title", "ASC");
+            listing.render();
+
+            listing.collection.setSortField("price", "DESC");
+            listing.render();
         */
 
         /*
