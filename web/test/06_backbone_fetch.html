@@ -207,14 +207,12 @@
         });
 
         var listing = new ProductListingView({el: $('product-list')});
-
-        listing.collection.setSortField("title", "ASC");
-        listing.collection.add(products);
-        listing.render();
+        
+        listing.collection.setSortField("price", "DESC");
 
         var d = listing.collection.fetch({keywords: "orange monkey"});
         d.done(function() {
-            alert("Done loading!");
+          alert("Done loading!");
         });
 
         /*        
@@ -223,10 +221,6 @@
 
             listing.collection.setSortField("price", "DESC");
             listing.render();
-        */
-
-        /*
-        // ProductListing.fetch({keywords: "blue marionette"});
         */
 
     </script>
