@@ -199,7 +199,7 @@
 
         var d = listing.collection.fetch({keywords: "orange monkey"});
         d.done(function() {
-          alert("Done loading!");
+          alert("Done loading!"); // our Ajax loader is allowed to "stop" here
         });
 
         /*        
