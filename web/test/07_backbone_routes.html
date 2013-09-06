@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Backbone for Etsy</title>
+</head>
+<body>
+
+    <script src="../js/jquery.js"></script>
+    <script src="../js/underscore.js"></script>
+    <script src="../js/backbone.js"></script>
+
+    <script>
+
+		var ProductRouter = Backbone.Router.extend({
+		  /* define the route and function maps for this router */
+		  routes: {
+		  	"": "empty",
+		    "about" : "showAbout",
+		    "listing/:keywords/:sort_field/:sort_dir" : "search",
+		    "listing/:keywords/:sort_field/:sort_dir/:id" : "search"
+		  },
+
+		  empty: function() {
+		  	alert("empty");
+		  },
+
+		  showAbout: function() { console.log("hello"); },
+
+		  search: function(keywords, sort_field, sort_dir, id) {
+		  	sort_field = sort_field || "price";
+		  	sort_dir = sort_dir || "DESC";
+
+		  	if (id) {
+		  		alert("We need to show Product " + id);
+		  	}
+		  	else {
+		  		alert("Showing... " + keywords + " " + sort_field + " / " + sort_dir);
+		  	}
+		  }
+		});
+
+		var myRouter = new ProductRouter();
+
+		Backbone.history.start();
+
+		// URL Test cases:
+		// routes.html
+		// routes.html#
+		// routes.html#listing/blue marionette/title/ASC
+		// routes.html#listing/blue marionette/title/ASC/HHHHH
+
+    </script>
+
+</body>
+</html>
