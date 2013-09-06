@@ -13,10 +13,11 @@
     <script>
 
 		var ProductRouter = Backbone.Router.extend({
-		  /* define the route and function maps for this router */
+
 		  routes: {
 		  	"": "empty",
 		    "about" : "showAbout",
+		    "listing/:keywords": "search",
 		    "listing/:keywords/:sort_field/:sort_dir" : "search",
 		    "listing/:keywords/:sort_field/:sort_dir/:id" : "search"
 		  },
@@ -28,6 +29,10 @@
 		  showAbout: function() { console.log("hello"); },
 
 		  search: function(keywords, sort_field, sort_dir, id) {
+
+		  	// Better search: everytime we SORT by field -> query again! but more expensive!?
+
+		  	keywords = keywords || "";
 		  	sort_field = sort_field || "price";
 		  	sort_dir = sort_dir || "DESC";
 
