@@ -28,39 +28,6 @@
 
     <script>
 
-        var productTransformer = function(product) {
-            var p = product;
-
-            var item = {
-                id: p.listing_id
-              , title: p.title
-              , category: p.category_path.join("/")
-              , description: p.description
-              , price: parseFloat(p.price)
-              , currency_code: p.currency_code
-            };
-
-            if (p.images && p.images.length > 0) {
-                var img = p.images[0];
-                item['image_medium']   = img['url_170x135'];
-                item['image_large'] = img['url_fullxfull'];
-            }
-            return item;
-        }
-
-        var products = _.map(etsy_products, productTransformer);
-
-        var cnt = 0;
-
-        _.each(products, function(p) {
-            cnt = (cnt+1) % etsy_product_images.length;
-            var img = etsy_product_images[cnt];
-            p['image_medium']   = img['url_170x135'];
-            p['image_large'] = img['url_fullxfull'];
-        });
-
-        console.log(products);
-
         var Product = Backbone.Model.extend({
             defaults: {
                 id: 0
@@ -162,6 +129,26 @@
             model: Product
           , fetch: function(options) { // override default fetch to use our Ajax version
                 var self = this;
+
+                var productTransformer = function(product) {
+                    var p = product;
+
+                    var item = {
+                        id: p.listing_id
+                      , title: p.title
+                      , category: p.category_path.join("/")
+                      , description: p.description
+                      , price: parseFloat(p.price)
+                      , currency_code: p.currency_code
+                    };
+
+                    if (p.images && p.images.length > 0) {
+                        var img = p.images[0];
+                        item['image_medium']   = img['url_170x135'];
+                        item['image_large'] = img['url_fullxfull'];
+                    }
+                    return item;
+                }
 
                 var deferred = EtsySearch.find(options);
                 deferred.done(function(etsyProducts) {
