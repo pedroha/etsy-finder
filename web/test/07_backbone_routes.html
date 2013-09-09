@@ -6,10 +6,6 @@
 </head>
 <body>
 
-    <script src="../js/jquery.js"></script>
-    <script src="../js/underscore.js"></script>
-    <script src="../js/backbone.js"></script>
-
 	<h2>Sort Options</h2>
 
 	<button id="sort-asc-btn">ASC</button>
@@ -19,6 +15,10 @@
     	<option value="title">Title</option> 
     	<option value="category">Category</option>
 	</select>
+
+    <script src="../js/jquery.js"></script>
+    <script src="../js/underscore.js"></script>
+    <script src="../js/backbone.js"></script>
 
     <script>
 
@@ -34,7 +34,7 @@
 
 		  empty: function() {
 		  	//alert("empty root");
-		  	search();
+		  	this.search();
 		  },
 
 		  showAbout: function() { console.log("hello About"); },
@@ -56,6 +56,47 @@
 		  }
 		});
 
+    </script>
+
+	<script>
+
+		var SortControl = (function() {
+
+			var showSort = function(options) {
+				console.log(options);
+			};
+
+			var init = function(fn) {
+				showSort = fn;
+			};
+
+			// Sort control		
+			var sortOptions = {
+				direction: "ASC"
+			  , field: "title"
+			};
+			
+			$('#sort-field-select').val(sortOptions.field);
+
+			$('#sort-asc-btn').on('click', function() {
+				sortOptions.direction = "ASC";
+				showSort(sortOptions);
+			});
+			$('#sort-desc-btn').on('click', function() {
+				sortOptions.direction = "DESC";
+				showSort(sortOptions);
+			});
+
+			$('#sort-field-select').on('change', function() {
+				sortOptions.field = $(this).val();
+				showSort(sortOptions);
+			});
+
+			return {
+				init: init
+			};
+		})();
+
 		var myRouter = new ProductRouter();
 
 		Backbone.history.start();
@@ -66,39 +107,12 @@
 		// routes.html#listing/blue marionette/title/ASC
 		// routes.html#listing/blue marionette/title/ASC/HHHHH
 
-    </script>
-
-	<script>
-
-		// Sort control		
-		var sortOptions = {
-			direction: "ASC"
-		  , field: "title"
-		};
-		
-		$('#sort-field-select').val(sortOptions.field);
-
-		function showSort(options) {
+		SortControl.init(function showSort(options) {
 			console.log(options);
 
 			var route = "listing/blue marionette/" + options.field + "/" + options.direction;
 			myRouter.navigate(route, { trigger: true } );
-		}
-
-		$('#sort-asc-btn').on('click', function() {
-			sortOptions.direction = "ASC";
-			showSort(sortOptions);
 		});
-		$('#sort-desc-btn').on('click', function() {
-			sortOptions.direction = "DESC";
-			showSort(sortOptions);
-		});
-
-		$('#sort-field-select').on('change', function() {
-			sortOptions.field = $(this).val();
-			showSort(sortOptions);
-		});
-
 
 	</script>
 

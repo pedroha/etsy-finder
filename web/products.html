@@ -15,10 +15,23 @@
 		<button id="search-btn">Search</button>		
 	</div>
 
+	<h2>Sort</h2>
+	<button id="sort-asc-btn">ASC</button>
+	<button id="sort-desc-btn">DESC</button>
+    <select id="sort-field-select">
+    	<option value="price">Price</option> 
+    	<option value="title">Title</option> 
+    	<option value="category">Category</option>
+	</select>
+
 	<div id="products"></div>
 
 	<script src="js/jquery.js"></script>
+    <script src="js/underscore.js"></script>
+    <script src="js/backbone.js"></script>
+
 	<script src="js/jquery.blockUI.js"></script>
+	
 	<script src="js/etsy.js"></script>
 	<script src="js/etsy-finder.js"></script>
 
