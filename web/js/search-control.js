@@ -1,4 +1,3 @@
-
 var SearchControl = {
 	init: function() {
 
