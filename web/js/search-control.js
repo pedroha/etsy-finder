@@ -1,8 +1,11 @@
 var SearchControl = {
-	init: function() {
+	init: function(listing) {
+		this.listing = listing;
+
+		var self = this;
 
 		var search = function(evt) {
-			var keywords = $('#keywords').val();					
+			var keywords = self.getKeywords();					
 			SearchControl.searchByKeywords(keywords);
 			return false;
 		};
@@ -14,6 +17,10 @@ var SearchControl = {
 			}
 		});
 	}
+  , getKeywords: function() {
+		var keywords = $('#keywords').val();
+		return keywords;  	
+  }
   , searchByKeywords: function(keywords) {
   		var options = null;
 
@@ -40,56 +47,9 @@ var SearchControl = {
 	    });
 	    setTimeout($.unblockUI, 10000); // MAX timeout: 10 seconds
 
-		var deferred = EtsySearch.find(options);
-
+	    var deferred = this.listing.collection.fetch(options);
 		deferred.done(function(products) {
 			$.unblockUI();
-
-			var list = [];
-
-			// Transform from Etsy Product format to a simpler one
-			for (var i = 0; i < products.length; i++) {
-				var p = products[i];
-				var item = {
-					id: p.listing_id
-				  , title: p.title
-				  , description: p.description
-				  , price: p.price
-				  , currency_code: p.currency_code
-				};
-				if (p.images && p.images.length > 0) {
-					var img = p.images[0];
-					item['url_170x135']   = img['url_170x135'];
-					item['url_fullxfull'] = img['url_fullxfull'];
-				}
-				list.push(item);
-			}
-			showModel(list);
 		});
  	}
 };
-
-function showModel(list) {
-	var template = [
-		'<li>\n'
-	  , '   <img src="%url_170x135%"/>'
-	  , '   <p>%title%</p>'
-	  , '</li>'
-	];
-
-	var tmpl = template.join('');
-
-	var pieces = [];
-
-	for (var i = 0; i < list.length; i++) {
-		var it = list[i];
-		var s = tmpl.replace("%url_170x135%", it['url_170x135'])
-				    .replace("%title%", it['title']);
-
-		pieces.push(s);
-
-	}
-	var $list = $('<ul>');
-	$list.append( pieces.join('') );
-	$('#products').empty().append($list);
-}
