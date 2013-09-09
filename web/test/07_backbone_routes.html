@@ -10,6 +10,8 @@
     <script src="../js/underscore.js"></script>
     <script src="../js/backbone.js"></script>
 
+	<h2>Sort Options</h2>
+
 	<button id="sort-asc-btn">ASC</button>
 	<button id="sort-desc-btn">DESC</button>
     <select id="sort-field-select">
@@ -31,7 +33,8 @@
 		  },
 
 		  empty: function() {
-		  	alert("empty root");
+		  	//alert("empty root");
+		  	search();
 		  },
 
 		  showAbout: function() { console.log("hello About"); },
@@ -67,8 +70,7 @@
 
 	<script>
 
-		// Sort control
-		
+		// Sort control		
 		var sortOptions = {
 			direction: "ASC"
 		  , field: "title"
