@@ -10,7 +10,6 @@
     <script src="../js/vendor/underscore.js"></script>
     <script src="../js/vendor/backbone.js"></script>
     <script src="../js/etsy-api.js"></script>
-    <script src="etsy-products.js"></script>
 
     <script id="product-template" type="text/template">
          <img src="<%= image_medium %>"/>
@@ -80,7 +79,6 @@
                // Default sort field and direction
                this.sortField = "title";
                this.sortDirection = "ASC";
-               this.caseSensitive = true;
            },
 
            setSortField: function (field, direction) {
@@ -111,11 +109,9 @@
                        b = direction === "ASC" ? right.criteria : left.criteria;
 
                    if (a !== b) {
-                       if (!self.caseSensitive) {
-                           if (typeof a === "string" && typeof b === "string") {
-                               a = a.toLowerCase();
-                               b = b.toLowerCase();                    
-                           }
+                       if (typeof a === "string" && typeof b === "string") {
+                           a = a.toLowerCase();
+                           b = b.toLowerCase();                    
                        }
                        if (a > b || a === void 0) return 1;
                        if (a < b || b === void 0) return -1;

@@ -79,10 +79,19 @@
 
 		var errback = function(err) {
 			alert(err);
-		}
+		};
+
+		var defaultSearchOptions = {
+			sort_on: 'score'
+		  , sort_direction: 'down'
+		  , min_price: 5
+		  , max_price: 99
+		};
 
 		var doListing = function(keywords) {
-			var listing = Etsy.getListing(keywords, errback);
+			var searchOptions = $.extend({}, defaultSearchOptions, keywords);
+
+			var listing = Etsy.getListing(searchOptions, errback);
 
 			listing.fail(errback);
 

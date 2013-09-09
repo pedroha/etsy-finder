@@ -9,7 +9,6 @@
     <script src="../js/vendor/jquery.js"></script>
     <script src="../js/vendor/underscore.js"></script>
     <script src="../js/vendor/backbone.js"></script>
-    <script src="../js/etsy-api.js"></script>
     <script src="etsy-products.js"></script>
 
     <script id="product-template" type="text/template">
@@ -160,17 +159,6 @@
 
         var ProductListing = SortedCollection.extend({
             model: Product
-          , fetch: function(options) { // override default fetch to use our Ajax version
-                var self = this;
-
-                var deferred = EtsySearch.find(options);
-                deferred.done(function(etsyProducts) {
-                    var products = _.map(etsyProducts, productTransformer);
-
-                    self.reset(products);
-                });
-                return deferred;
-            }
         });
 
         var ProductListingView = Backbone.View.extend({

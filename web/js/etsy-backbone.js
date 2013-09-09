@@ -198,10 +198,10 @@ var ProductRouter = Backbone.Router.extend({
 
   	// SORT Dilemma: several options
   	// 1) Requery with new sort options back to the server (better data with sorting)
-	// 2) Sort only on the client data (with Backbone sort)
-	// 3) Use isotope for visual sorting purely on the client data
+  	// 2) Sort only on the client data (with Backbone sort)
+  	// 3) Use isotope for visual sorting purely on the client data
 
-	// For simplicity and accuracy, 1) requery the server?
+  	// For simplicity and accuracy, 1) requery the server?
 
   }
 });

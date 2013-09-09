@@ -1,0 +1,80 @@
+<script type="text/javascript">
+
+function getData(data) {
+	if (data.ok) {
+		console.log(data);
+
+		// do something with the data here
+		var str = JSON.stringify(data.results); 
+		alert(str);
+	} else {
+		alert(data.error);
+	}
+}
+
+</script>
+
+<!--
+
+// sort_on=price&sort_order=up -> prices going up (small to large), page1: prices start at 0.20
+<script src="https://openapi.etsy.com/v2/listings/active.js?callback=getData&api_key=skg82rpwr3x8t285zcj6z03w&sort_on=price&sort_order=down"></script>
+
+// sort_on=price&sort_order=up -> prices going down (very large to smaller), page1: prices starting at "169000.00" GBP
+<script src="https://openapi.etsy.com/v2/listings/active.js?callback=getData&api_key=skg82rpwr3x8t285zcj6z03w&sort_on=price&sort_order=up"></script>
+
+// created & sort_order=down
+<script src="https://openapi.etsy.com/v2/listings/active.js?callback=getData&api_key=skg82rpwr3x8t285zcj6z03w&sort_on=created&sort_order=down"></script>
+
+Most recent item:
+http://www.etsy.com/listing/113894045/chocolate-brown-tutu
+
+
+<script src="https://openapi.etsy.com/v2/listings/active.js?callback=getData&api_key=skg82rpwr3x8t285zcj6z03w&sort_on=created&sort_order=up"></script>
+
+Not clear about the date/timestamp rules...
+
+var d = new Date(1159374965);
+undefined
+d
+Wed Jan 14 1970 05:02:54 GMT-0500 (EST)
+
+var date = new Date(1378751052);
+undefined
+date
+Fri Jan 16 1970 17:59:11 GMT-0500 (EST)
+
+
+<script src="https://openapi.etsy.com/v2/listings/active.js?callback=getData&api_key=skg82rpwr3x8t285zcj6z03w&sort_on=price&sort_order=down"></script>
+
+<script src="https://openapi.etsy.com/v2/listings/active.js?callback=getData&api_key=skg82rpwr3x8t285zcj6z03w&sort_on=score&sort_order=up"></script>
+
+// score up: not valid
+
+// score down (only option)
+
+min_price:30
+max_price:45
+<script src="https://openapi.etsy.com/v2/listings/active.js?callback=getData&api_key=skg82rpwr3x8t285zcj6z03w&sort_on=score&sort_order=down&min_price=30&max_price=45"></script>
+
+min_price:30
+max_price:31
+<script src="https://openapi.etsy.com/v2/listings/active.js?callback=getData&api_key=skg82rpwr3x8t285zcj6z03w&sort_on=score&sort_order=down&min_price=30&max_price=31"></script>
+
+min_price=12
+max_price=12
+<script src="https://openapi.etsy.com/v2/listings/active.js?callback=getData&api_key=skg82rpwr3x8t285zcj6z03w&sort_on=score&sort_order=down&min_price=12&max_price=12"></script>
+
+Still 50001 matches
+
+min_price=0
+max_price=0.50
+Count: 17388
+<script src="https://openapi.etsy.com/v2/listings/active.js?callback=getData&api_key=skg82rpwr3x8t285zcj6z03w&sort_on=score&sort_order=down&min_price=0&max_price=0.50"></script>
+
+-->
+
+<script src="https://openapi.etsy.com/v2/listings/active.js?callback=getData&api_key=skg82rpwr3x8t285zcj6z03w&sort_on=score&sort_order=down&min_price=0&max_price=0.50"></script>
+
+// We really like the score sorting down (=most popular for whatever the measure)
+// Specify a price filter: min, max, or exactly equal:
+// (ultra-cheap: <1, cheap<10, average:10 to 99, pricey;, overly_pricey > 1000)
