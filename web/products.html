@@ -33,9 +33,29 @@
 	
 	<script src="js/etsy-api.js"></script>
 	<script src="js/search-control.js"></script>
+	<script src="js/sort-control.js"></script>
 
 	<script>
 		SearchControl.init();
+
+
+		var myRouter = new ProductRouter();
+
+		Backbone.history.start();
+
+		// URL Test cases:
+		// routes.html
+		// routes.html#
+		// routes.html#listing/blue marionette/title/ASC
+		// routes.html#listing/blue marionette/title/ASC/HHHHH
+
+		SortControl.init(function showSort(options) {
+			console.log(options);
+
+			var route = "listing/blue marionette/" + options.field + "/" + options.direction;
+			myRouter.navigate(route, { trigger: true } );
+		});
+
 	</script>
 </body>
 </html>
