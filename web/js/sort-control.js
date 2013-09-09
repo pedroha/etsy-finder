@@ -37,7 +37,8 @@ var ProductRouter = Backbone.Router.extend({
 	// 2) Sort only on the client data (with Backbone sort)
 	// 3) Use isotope for visual sorting purely on the client data
 
-	// For simplicity and accuracy, 1) requery the server
+	// For simplicity and accuracy, 1) requery the server?
+
   }
 });
 
