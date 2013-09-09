@@ -78,15 +78,16 @@
 
 		function showSort(options) {
 			console.log(options);
+
+			var route = "listing/blue marionette/" + options.field + "/" + options.direction;
+			myRouter.navigate(route, { trigger: true } );
 		}
 
 		$('#sort-asc-btn').on('click', function() {
-			alert("Hello");
 			sortOptions.direction = "ASC";
 			showSort(sortOptions);
 		});
 		$('#sort-desc-btn').on('click', function() {
-			alert("Bye");
 			sortOptions.direction = "DESC";
 			showSort(sortOptions);
 		});
