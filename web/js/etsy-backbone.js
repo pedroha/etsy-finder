@@ -20,27 +20,26 @@ var ProductView = Backbone.View.extend({
         'click button.delete': 'remove'
     }
   , initialize: function() {
-        _.bindAll(this, 'remove', 'unrender');
+      _.bindAll(this, 'remove', 'unrender');
 
-        this.listenTo(this.model, 'change', this.render);
-        this.listenTo(this.model, 'remove', this.unrender);
-  }
+      this.listenTo(this.model, 'change', this.render);
+      this.listenTo(this.model, 'remove', this.unrender);
+    }
   , render: function() {
-    var json = this.model.toJSON();
-    var content = this.productTpl( json );
-    this.$el.html( content );
-    return this;
-  }
+      var json = this.model.toJSON();
+      var content = this.productTpl( json );
+      this.$el.html( content );
+      return this;
+    }
   , unrender: function() {
-    $(this.el).remove();
-  }
+      $(this.el).remove();
+    }
   , remove: function() {
     this.model.destroy();
   }
 });
 
 // Test collection of multiple products
-
 
 // http://stackoverflow.com/questions/5013819/reverse-sort-order-with-backbone-js
 
@@ -50,7 +49,6 @@ var SortedCollection = Backbone.Collection.extend({
        // Default sort field and direction
        this.sortField = "title";
        this.sortDirection = "ASC";
-       this.caseSensitive = true;
    },
 
    setSortField: function (field, direction) {
@@ -81,11 +79,9 @@ var SortedCollection = Backbone.Collection.extend({
                b = direction === "ASC" ? right.criteria : left.criteria;
 
            if (a !== b) {
-               if (!self.caseSensitive) {
-                   if (typeof a === "string" && typeof b === "string") {
-                       a = a.toLowerCase();
-                       b = b.toLowerCase();                    
-                   }
+               if (typeof a === "string" && typeof b === "string") {
+                   a = a.toLowerCase();
+                   b = b.toLowerCase();                    
                }
                if (a > b || a === void 0) return 1;
                if (a < b || b === void 0) return -1;
@@ -100,12 +96,19 @@ var ProductListing = SortedCollection.extend({
   , fetch: function(options) { // override default fetch to use our Ajax version
         var self = this;
 
+        var capitalize = function(str) { // Normalize titles
+          if (str && str.length && str.length > 0) {
+            str = str.charAt(0).toUpperCase() + str.substr(1);
+          }
+          return str;
+        };
+
         var productTransformer = function(product) {
             var p = product;
 
             var item = {
                 id: p.listing_id
-              , title: p.title
+              , title: capitalize(p.title)
               , category: p.category_path.join("/")
               , description: p.description
               , price: parseFloat(p.price)
@@ -161,48 +164,5 @@ var ProductListingView = Backbone.View.extend({
         });
         this.$list.append(v.render().el);            
     }
-});
-
-
-var ProductRouter = Backbone.Router.extend({
-
-  routes: {
-  	"": "empty",
-    "about" : "showAbout",
-    "listing/:keywords": "search",
-    "listing/:keywords/:sort_field/:sort_dir" : "search",
-    "listing/:keywords/:sort_field/:sort_dir/:id" : "search"
-  },
-
-  empty: function() {
-  	//alert("empty root");
-  	this.search();
-  },
-
-  showAbout: function() { console.log("hello About"); },
-
-  search: function(keywords, sort_field, sort_dir, id) {
-
-  	// Better search: everytime we SORT by field -> query again! but more expensive!?
-
-  	keywords = keywords || "";
-  	sort_field = sort_field || "price";
-  	sort_dir = sort_dir || "DESC";
-
-  	if (id) {
-  		alert("We need to show Product " + id);
-  	}
-  	else {
-  		alert("Showing... " + keywords + " " + sort_field + " / " + sort_dir);
-  	}
-
-  	// SORT Dilemma: several options
-  	// 1) Requery with new sort options back to the server (better data with sorting)
-  	// 2) Sort only on the client data (with Backbone sort)
-  	// 3) Use isotope for visual sorting purely on the client data
-
-  	// For simplicity and accuracy, 1) requery the server?
-
-  }
 });
 
