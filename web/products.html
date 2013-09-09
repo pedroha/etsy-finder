@@ -9,6 +9,7 @@
 	</style>
 </head>
 <body>
+
 	<h1>Etsy Finder</h1>
 	<div class="search-box">
 		<input type="text" id="keywords" value="" placeholder="Keyword"/>
@@ -36,18 +37,18 @@
 	<script src="js/sort-control.js"></script>
 
 	<script>
-		SearchControl.init();
 
+		SearchControl.init();
 
 		var myRouter = new ProductRouter();
 
 		Backbone.history.start();
 
 		// URL Test cases:
-		// routes.html
-		// routes.html#
-		// routes.html#listing/blue marionette/title/ASC
-		// routes.html#listing/blue marionette/title/ASC/HHHHH
+		// products.html
+		// products.html#
+		// products.html#listing/blue marionette/title/ASC
+		// products.html#listing/blue marionette/title/ASC/HHHHH
 
 		SortControl.init(function showSort(options) {
 			console.log(options);
