@@ -54,9 +54,9 @@ SORT Dilemma: several options
  3) Use isotope for visual sorting purely on the client data
 
 After analyzing the result sets from jsonp calls and different options:
-a) Too many matches, even if we specify a min_price and max_price
-b) There's an option for querying with a score/down criteria (most popular).
-c) We can also query by price and created time. Querying by price is useless since we get so many matches even with a single price (same min_price/max_price)
+	a) Too many matches, even if we specify a min_price and max_price
+	b) There's an option for querying with a score/down criteria (most popular).
+	c) We can also query by price and created time. Querying by price is useless since we get so many matches even with a single price (same min_price/max_price)
 
 Conclusion: we want to query the most popular items (using the score sorting on the server).
 
