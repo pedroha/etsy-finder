@@ -113,7 +113,7 @@
 
         var listing = new ProductListingView({el: $('product-list')});
 		listing.collection.setSortField("price", "DESC");
-        listing.collection.fetch({keywords: "blue monkey"});
+        listing.collection.fetch({keywords: "orange monkey"});
 
 		var myRouter = new ProductRouter(listing);
 
@@ -129,7 +129,7 @@
 		SortControl.init(function showSort(options) {
 			console.log(options);
 
-			var route = "listing/blue marionette/" + options.field + "/" + options.direction;
+			var route = "listing/orange monkey/" + options.field + "/" + options.direction;
 			myRouter.navigate(route, { trigger: true } );
 		});
 
