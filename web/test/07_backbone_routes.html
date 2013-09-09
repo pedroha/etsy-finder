@@ -10,6 +10,14 @@
     <script src="../js/underscore.js"></script>
     <script src="../js/backbone.js"></script>
 
+	<button id="sort-asc-btn">ASC</button>
+	<button id="sort-desc-btn">DESC</button>
+    <select id="sort-field-select">
+    	<option value="price">Price</option> 
+    	<option value="title">Title</option> 
+    	<option value="category">Category</option>
+	</select>
+
     <script>
 
 		var ProductRouter = Backbone.Router.extend({
@@ -23,10 +31,10 @@
 		  },
 
 		  empty: function() {
-		  	alert("empty");
+		  	alert("empty root");
 		  },
 
-		  showAbout: function() { console.log("hello"); },
+		  showAbout: function() { console.log("hello About"); },
 
 		  search: function(keywords, sort_field, sort_dir, id) {
 
@@ -56,6 +64,41 @@
 		// routes.html#listing/blue marionette/title/ASC/HHHHH
 
     </script>
+
+	<script>
+
+		// Sort control
+		
+		var sortOptions = {
+			direction: "ASC"
+		  , field: "title"
+		};
+		
+		$('#sort-field-select').val(sortOptions.field);
+
+		function showSort(options) {
+			console.log(options);
+		}
+
+		$('#sort-asc-btn').on('click', function() {
+			alert("Hello");
+			sortOptions.direction = "ASC";
+			showSort(sortOptions);
+		});
+		$('#sort-desc-btn').on('click', function() {
+			alert("Bye");
+			sortOptions.direction = "DESC";
+			showSort(sortOptions);
+		});
+
+		$('#sort-field-select').on('change', function() {
+			sortOptions.field = $(this).val();
+			showSort(sortOptions);
+		});
+
+
+	</script>
+
 
 </body>
 </html>

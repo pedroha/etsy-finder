@@ -68,8 +68,6 @@
 			init: function() {
 
 				var search = function(evt) {
-					evt.preventDefault();
-
 					var keywords = $('#keywords').val();					
 					SearchControl.searchByKeywords(keywords);
 					return false;
