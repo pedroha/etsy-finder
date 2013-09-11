@@ -28,7 +28,7 @@
 
     <script>
 
-        var listing = new ProductListingView({el: $('#product-list')});
+        var listing = new ProductRowListingView({el: $('#product-list')});
         
         listing.collection.add(products);
         listing.collection.setSortField("title", "ASC");

@@ -1,10 +1,18 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Etsy Finder</title>
+  <head>
+    <meta charset="utf-8">
+    <title>Etsy Finder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-	<link rel="stylesheet" href="css/etsy.css"></link>
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    
+	<!-- link rel="stylesheet" href="css/etsy.css"></link -->
 
     <script id="product-template" type="text/template">
          <img src="<%= image_medium %>"/>
@@ -15,34 +23,98 @@
          <button class="delete">Remove</button>
     </script>
 
-    <style>
+	<style type="text/css">
+
+      body {
+        padding-top: 20px;
+        padding-bottom: 60px;
+      }
+
+      /* Custom container */
+      .container {
+        margin: 0 auto;
+        max-width: 1000px;
+      }
+
+      .container > hr {
+        margin: 60px 0;
+      }
+
+
+		#keywords {
+			font-size: 2em;
+			line-height: 2em;
+			height: 2em;
+			width: 100%;
+		}
+
+		#search-btn {
+			font-size: 2em;
+			line-height: 2em;
+			width: 80%;
+		}
+
+		#sort-field-select {
+			margin-top: 10px;
+		}
+
 	</style>
 </head>
 <body>
 
-	<h1>Etsy Finder</h1>
-	<div class="search-box">
-		<input type="text" id="keywords" value="" placeholder="Keyword"/>
-		<button id="search-btn">Search</button>		
-	</div>
+	<div id="container">
 
-	<h2>Sort</h2>
-	<button id="sort-asc-btn">ASC</button>
-	<button id="sort-desc-btn">DESC</button>
-    <select id="sort-field-select">
-    	<option value="price">Price</option> 
-    	<option value="title">Title</option> 
-    	<option value="category">Category</option>
-	</select>
+		<header>
+
+	        <div class="row-fluid search-box">
+	        	<h1 class="span2">
+	        		Search
+	        	</h1>
+	        	<div class="span6">
+					<input type="text" id="keywords" value="" placeholder="Keyword" x-webkit-speech/>
+	        	</div>
+	        	<div class="span4">
+					<button id="search-btn" class="btn btn-primary">Search</button>
+	        	</div>
+	        </div>
+
+	        <div class="row-fluid sort-box">
+	        	<h1 class="span2">
+	        		Sort
+	        	</h1>
+	        	<div class="span6">
+				    <select id="sort-field-select">
+				    	<option value="price">Price</option> 
+				    	<option value="title">Title</option> 
+				    	<option value="category">Category</option>
+					</select>
+
+					<button id="sort-asc-btn" class="btn btn-info">ASC</button>
+					<button id="sort-desc-btn" class="btn btn-info">DESC</button>
+	        	</div>
+	        	<div class="span4">
+	        	</div>
+	        </div>
+
+		</header>
 
 
-    <div id="product-list">
-        <ul>
-        </ul>
-    </div>
+	    <div id="product-list">
+	        <ul>
+	        </ul>
+	    </div>		
 
+
+      <hr>
+
+      <div class="footer">
+        <p>&copy; Etsy 2013</p>
+      </div>
+
+	</div> <!-- container -->
 
 	<script src="js/vendor/jquery.js"></script>
+    <script src="js/vendor/bootstrap.js"></script>
     <script src="js/vendor/underscore.js"></script>
     <script src="js/vendor/backbone.js"></script>
 	<script src="js/vendor/jquery.blockUI.js"></script>
