@@ -30,7 +30,7 @@ _.each(products, function(p) {
     p['image_large'] = img['url_fullxfull'];
 });
 
-console.log(products);
+// console.log(products);
 
 var Product = Backbone.Model.extend({
     defaults: {
@@ -148,23 +148,27 @@ var ProductListingView = Backbone.View.extend({
         this.collection = new ProductListing();
         this.listenTo(this.collection, 'add', this.appendItem);
         this.listenTo(this.collection, 'reset', this.render);
-        this.render();
+        // this.render();
     }
+  , reset: function() {
+        this.$list.empty();
+  }
   , render: function() {
         var self = this;
 
         this.collection.sort();
-        
-        this.$list.empty();
 
+        this.reset();
+        
         var cnt = 0;
         _(this.collection.models).each(function(item) {
             self.appendItem(item);
-            console.log(cnt++, item.attributes);
+            // console.log(cnt, "ProductListingView", item.attributes);
+            cnt++;
         }, this);
         return this;
     }
-  , appendItem: function(item) {
+  , appendItem: function(item, cnt) {
         var v = new ProductView({
             model: item
           , tagName: this.eltTagName
@@ -172,4 +176,40 @@ var ProductListingView = Backbone.View.extend({
         });
         this.$list.append(v.render().el);            
     }
+});
+
+
+var ProductRowListingView = ProductListingView.extend({
+    initialize: function(options) {
+        ProductListingView.prototype.initialize.apply(this, arguments);        
+        this.numColsPerRow = options.numColsPerRow || 3; // NEEDS to be up here (-> render())
+        this.cnt =  0;
+    }
+  , reset: function() {
+        this.cnt = 0;
+        $(this.el).empty();
+        // alert("Reset");
+    }
+  , appendItem: function(item) {
+        var v = new ProductView({
+            model: item
+          , tagName: this.eltTagName
+          , tagClass: this.eltTagClass
+        });
+
+        var isNewRow = (this.cnt % this.numColsPerRow == 0);
+        // console.log("isNewRow", isNewRow, this.cnt, this.numColsPerRow);
+
+        if (isNewRow) {
+            $list = $('<ul class="row-fluid"></ul>');
+            $list.appendTo(this.el);
+
+            this.$list = $list; // reset current list
+
+            console.log("isNewRow");
+        }
+        this.$list.append( v.render().el );
+
+        this.cnt++;
+    }    
 });

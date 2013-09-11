@@ -117,7 +117,7 @@
         <!-- Example row of columns -->
         <ul class="row-fluid">
         </ul>
-        
+
       </div>
 
 
@@ -147,14 +147,8 @@
 
     <script>
 
-    //var ProductListingView = Backbone.View.extend({
-    //el: $('#product-list')
-    //, $list: $('ul', this.el)
-    //, eltTagName: 'li' 
-
-        var listing = new ProductListingView({
+        var listing = new ProductRowListingView({
           el: $('#product-list')
-        , eltTagClass: 'span4' 
         });
         
         listing.collection.add(products);
