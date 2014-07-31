@@ -10,31 +10,18 @@
 	  , product_image_url:  BASE_URL + "/%id%/images.js?api_key=" + API_KEY
 
 	  , getListing: function(options, errback) {
-
-	  		var deferred = $.Deferred();
-	  		deferred.fail(errback);
-
-			var getData = function(data) {
-				if (data.ok) {
-					deferred.resolve(data);
-				}
-				else {
-					var msg = "getListing(): Invalid response from server " +
-								this.listing_url + "/" + + JSON.stringify(data);
-					deferred.reject(msg);
-				}			
-			};
-
 			var url = this.listing_url;
 
-			$.ajax({
+			var deferred = $.ajax({
 				url: url
 			  , dataType: 'jsonp'
 			  , data: options
-			  , success: getData // cannot be part of the deferred
-			  , error: deferred.reject
 			});
 
+			deferred.fail(function() {
+				var msg = "getListing(): Invalid response from server " + url;
+				errback(msg);
+			});
 			return deferred.promise();
 		}
 	  , getProductImages: function(product, errback) {

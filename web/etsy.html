@@ -118,6 +118,14 @@
 			myRouter.navigate(route, { trigger: true } );
 		});
 
+		if (Backbone.history.fragment) {
+			var route = Backbone.history.fragment;
+			alert("Found route ### : " + route);
+
+			Backbone.history.loadUrl(Backbone.history.fragment);
+			// myRouter.navigate(route, { trigger: true });
+		}
+
 	</script>
 </body>
 </html>
