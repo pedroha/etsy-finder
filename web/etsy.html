@@ -120,10 +120,11 @@
 
 		if (Backbone.history.fragment) {
 			var route = Backbone.history.fragment;
-			alert("Found route ### : " + route);
+			// alert("Found route ### : " + route);
 
+			// Neither is working... why?
+			myRouter.navigate(route, { trigger: true });
 			Backbone.history.loadUrl(Backbone.history.fragment);
-			// myRouter.navigate(route, { trigger: true });
 		}
 
 	</script>

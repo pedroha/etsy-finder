@@ -1,4 +1,4 @@
-(function(exports) {
+(function(exports, $) {
 	"use strict";
 
 	var BASE_URL = "https://openapi.etsy.com/v2/listings";
@@ -130,4 +130,4 @@
 	exports.Etsy = Etsy;
 	exports.EtsySearch = EtsySearch;
 
-})(window);
+})(window, jQuery);
