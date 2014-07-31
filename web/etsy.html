@@ -88,45 +88,11 @@
 	
 	<script src="js/etsy-api.js"></script>
 	<script src="js/etsy-backbone.js"></script>
-
 	<script src="js/search-control.js"></script>
 	<script src="js/sort-control.js"></script>
+	<script src="js/etsy-app.js"></script>
 
 	<script>
-
-        var listing = new ProductListingView({el: $('product-list')});
-		listing.collection.setSortField("price", "DESC");
-        //listing.collection.fetch({keywords: "orange monkey"});
-
-		SearchControl.init(listing);
-
-		var myRouter = new ProductRouter(listing);
-
-		Backbone.history.start();
-
-		// URL Test cases:
-		// etsy.html
-		// etsy.html#
-		// etsy.html#listing/blue marionette/title/ASC
-		// etsy.html#listing/blue marionette/title/ASC/HHHHH
-
-		SortControl.init(function showSort(options) {
-			console.log(options);
-
-			var keywords = SearchControl.getKeywords();
-			var route = "listing/" + keywords + "/" + options.field + "/" + options.direction;
-			myRouter.navigate(route, { trigger: true } );
-		});
-
-		if (Backbone.history.fragment) {
-			var route = Backbone.history.fragment;
-			// alert("Found route ### : " + route);
-
-			// Neither is working... why?
-			myRouter.navigate(route, { trigger: true });
-			Backbone.history.loadUrl(Backbone.history.fragment);
-		}
-
 	</script>
 </body>
 </html>
